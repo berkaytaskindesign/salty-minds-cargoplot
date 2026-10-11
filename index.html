@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>More efficient inquiry decisions · 4-week plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=Sora:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Brand tokens. Swap these to restyle the prototype. */
+    :root {
+      --brand-primary: #002d28;
+      --brand-accent: #39f2af;
+      --text-primary: #002d28;
+      --text-secondary: #33524d;
+      --surface-page: #ebf0fa;
+      --surface-foreground: #ffffff;
+      --border: #e3e8e7;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--surface-page);
+    }
+
+    body {
+      margin: 0;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-family: "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    :focus {
+      outline: none;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 2px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: var(--brand-primary);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--brand-primary);
+      font-size: 1.375rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h1,
+    h2,
+    h3,
+    .eyebrow {
+      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      color: var(--brand-primary);
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: 1rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      line-height: 1.3;
+    }
+
+    .time-options {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .time-note {
+      margin: 6px 0 0;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    .time-hero {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+
+    .time-num {
+      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .time-support,
+    .time-sentence {
+      margin: 8px 0 0;
+      line-height: 1.45;
+    }
+
+    .time-sentence {
+      margin-top: 14px;
+    }
+
+    .time-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .time-track li {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 10px;
+      border-top: 2px solid var(--brand-primary);
+    }
+
+    .time-track li + li {
+      margin-left: 8px;
+    }
+
+    .time-step {
+      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .time-hrs {
+      font-size: 0.875rem;
+    }
+
+    .panel {
+      padding: 16px 18px;
+      background: var(--surface-foreground);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .statement {
+      margin: 12px 0 0;
+      line-height: 1.5;
+    }
+
+    .plain-list {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .plain-list li {
+      position: relative;
+      margin-top: 8px;
+      padding-left: 16px;
+      line-height: 1.45;
+    }
+
+    .plain-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+    }
+
+    .goal-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding-left: 0;
+    }
+
+    .goal-list li::before {
+      content: none;
+    }
+
+    .goal-icon {
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      color: var(--brand-primary);
+    }
+
+    [aria-labelledby="scope-heading"] .goal-icon {
+      margin-top: 2px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    #plan .plan-week {
+      display: grid;
+      grid-template-columns: 7.5rem minmax(0, 1fr);
+      gap: 12px 20px;
+      align-items: start;
+    }
+
+    #plan .plan-week + .plan-week {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    #plan .plan-identity,
+    #plan .plan-body {
+      min-width: 0;
+    }
+
+    #plan .plan-num {
+      display: block;
+      margin: 0;
+      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 3.75rem;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      color: var(--text-primary);
+    }
+
+    #plan .plan-phase {
+      margin: 8px 0 0;
+      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    #plan .plan-activities {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #plan .plan-activities li {
+      line-height: 1.45;
+    }
+
+    #plan .plan-activities li + li {
+      margin-top: 4px;
+    }
+
+    #plan .plan-output {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: var(--surface-page);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    #plan .plan-output-label {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    #plan .plan-output-text {
+      margin: 2px 0 0;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 639px) {
+      #plan .plan-week {
+        grid-template-columns: 4.5rem minmax(0, 1fr);
+        gap: 8px 12px;
+      }
+
+      #plan .plan-num {
+        font-size: 2.75rem;
+      }
+
+      #plan .plan-phase {
+        font-size: 0.8125rem;
+      }
+    }
+
+    @media (min-width: 640px) {
+      .page {
+        gap: 24px;
+        padding: 48px 24px 72px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .split {
+        gap: 24px;
+      }
+    }
+
+    .footer-quiet {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      text-align: center;
+    }
+
+    .footer-quiet a {
+      color: inherit;
+      text-decoration-line: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      overflow-wrap: anywhere;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <p class="eyebrow">CARGOPLOT</p>
+      <h1>More efficient inquiry decisions · 4-week plan</h1>
+    </header>
+
+    <section class="panel" aria-labelledby="problem-heading">
+      <h2 id="problem-heading">Problem statement</h2>
+      <p class="statement">Sales employees at Cargoplot comparing freight options can’t easily tell which ones differ in the ways that matter to them. As a result, decisions take more effort than desired.</p>
+    </section>
+
+    <div class="split">
+      <section class="panel" aria-labelledby="goals-heading">
+        <h2 id="goals-heading">Goals</h2>
+        <ul class="plain-list goal-list" aria-labelledby="goals-heading">
+          <li>
+            <svg class="goal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M12 8v4.5l2.5 1.5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Reduce time to book
+          </li>
+          <li>
+            <svg class="goal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 16l5.2-5.2 3.6 3.2L20 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 7h6v6" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Increase conversion
+          </li>
+        </ul>
+      </section>
+      <section class="panel" aria-labelledby="scope-heading">
+        <h2 id="scope-heading">Scope</h2>
+        <ul class="plain-list goal-list" aria-labelledby="scope-heading">
+          <li>
+            <svg class="goal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="7" y="3.5" width="12" height="15" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+              <rect x="4" y="6.5" width="12" height="14" rx="1.5" fill="var(--surface-foreground)" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M7 11h6M7 14h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+            Inquiry search and details pages
+          </li>
+          <li>
+            <svg class="goal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <rect x="2" y="4" width="13" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.75"/>
+              <path d="M6.5 16.5h4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+              <rect x="16.5" y="7" width="5.5" height="10" rx="1.25" fill="none" stroke="currentColor" stroke-width="1.75"/>
+            </svg>
+            Desktop &amp; mobile
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="panel" aria-labelledby="plan-heading">
+      <h2 id="plan-heading" class="visually-hidden">Plan</h2>
+      <div id="plan" class="plan-weeks"></div>
+    </section>
+
+    <div class="time-options">
+      <section class="panel" aria-labelledby="time-total">
+        <h2 id="time-total">The total</h2>
+        <p class="time-note">48 hours is the commitment. The weeks explain the pace.</p>
+        <p class="time-hero"><span class="time-num">48</span> hrs</p>
+        <p class="time-support">12 hrs a week, for 4 weeks.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="time-week">
+        <h2 id="time-week">Each week</h2>
+        <p class="time-note">The weekly load comes first.</p>
+        <p class="time-hero"><span class="time-num">12</span> hrs</p>
+        <p class="time-support">Every week for 4 weeks. 48 hrs in all.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="time-words">
+        <h2 id="time-words">In words</h2>
+        <p class="time-note">One sentence, with no separate figures.</p>
+        <p class="time-sentence">The work runs for 4 weeks, at 12 hrs per week, 48 hrs in total.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="time-track">
+        <h2 id="time-track">Week by week</h2>
+        <p class="time-note">The same 12 hours, once for each week.</p>
+        <ol class="time-track">
+          <li>
+            <span class="time-step">1</span>
+            <span class="time-hrs">12 hrs</span>
+          </li>
+          <li>
+            <span class="time-step">2</span>
+            <span class="time-hrs">12 hrs</span>
+          </li>
+          <li>
+            <span class="time-step">3</span>
+            <span class="time-hrs">12 hrs</span>
+          </li>
+          <li>
+            <span class="time-step">4</span>
+            <span class="time-hrs">12 hrs</span>
+          </li>
+        </ol>
+        <p class="time-support">48 hrs across the 4 weeks.</p>
+      </section>
+    </div>
+
+    <p class="footer-quiet">Prepared by <a href="https://www.berkaytaskin.com/">Berkay</a> @ <a href="https://www.salty-minds.com/">Salty Minds</a>, with the ocean's energy.</p>
+  </main>
+
+  <script>
+    (function () {
+      var weeks = [
+        {
+          id: 1,
+          phase: "Discovery",
+          activities: [
+            "Stakeholder sessions",
+            "Customer interviews",
+            "Platform walkthrough and usage data review",
+            "Map the decision funnel"
+          ],
+          output: "Decision funnel map and key hypotheses"
+        },
+        {
+          id: 2,
+          phase: "Design explorations",
+          activities: [
+            "Explore interaction, anatomy and hierarchy",
+            "Direction review with stakeholders"
+          ],
+          output: "Design options to be validated"
+        },
+        {
+          id: 3,
+          phase: "Design validations",
+          activities: [
+            "Prototype design options",
+            "Prepare and run validation sessions",
+            "Final review with stakeholders"
+          ],
+          output: "Scope of the final design"
+        },
+        {
+          id: 4,
+          phase: "Revision, handoff and next steps",
+          activities: [
+            "Revise prototype",
+            "Align with design system",
+            "Handoff & next steps session with stakeholders"
+          ],
+          output: "Design files ready for handover with spec and acceptance criteria"
+        }
+      ];
+
+      var plan = document.getElementById("plan");
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      plan.innerHTML = weeks.map(function (week) {
+        return (
+          "<article class=\"plan-week\">" +
+            "<div class=\"plan-identity\">" +
+              "<p class=\"plan-num\" aria-hidden=\"true\">" + week.id + "</p>" +
+              "<p class=\"plan-phase\"><span class=\"visually-hidden\">Week " + week.id + ", </span>" + escapeHtml(week.phase) + "</p>" +
+            "</div>" +
+            "<div class=\"plan-body\">" +
+              "<ul class=\"plan-activities\" aria-label=\"Key activities\">" +
+                week.activities.map(function (activity) {
+                  return "<li>" + escapeHtml(activity) + "</li>";
+                }).join("") +
+              "</ul>" +
+              "<div class=\"plan-output\">" +
+                "<p class=\"plan-output-label\">Output</p>" +
+                "<p class=\"plan-output-text\">" + escapeHtml(week.output) + "</p>" +
+              "</div>" +
+            "</div>" +
+          "</article>"
+        );
+      }).join("");
+    }());
+  </script>
+</body>
+</html>

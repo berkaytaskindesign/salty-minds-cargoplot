@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hours summary · alternatives</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600&family=Sora:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-primary: #002d28;
+      --brand-accent: #39f2af;
+      --text-primary: #002d28;
+      --text-secondary: #33524d;
+      --surface-page: #ebf0fa;
+      --surface-foreground: #ffffff;
+      --border: #e3e8e7;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      background: var(--surface-page);
+      color: var(--text-primary);
+      font-family: "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    :focus {
+      outline: none;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--brand-primary);
+      outline-offset: 2px;
+    }
+
+    h1,
+    h2,
+    .eyebrow,
+    .num,
+    .eq-num,
+    .week-num,
+    .seg-hrs {
+      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .eyebrow {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin: 6px 0 0;
+      font-size: 1.375rem;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .lead {
+      margin: 8px 0 0;
+      color: var(--text-secondary);
+    }
+
+    .back {
+      color: var(--brand-primary);
+      font-weight: 600;
+    }
+
+    .panel {
+      padding: 16px 18px 18px;
+      background: var(--surface-foreground);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .note {
+      margin: 6px 0 0;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
+    }
+
+    .figures {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .figures li {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .num {
+      font-size: 1.75rem;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .weeks {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .weeks li {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .week-num {
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
+    .week-hrs {
+      font-size: 0.9375rem;
+    }
+
+    .total {
+      margin: 12px 0 0;
+      font-weight: 600;
+    }
+
+    .segments {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .segments li {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      min-height: 72px;
+      padding: 10px 8px;
+      background: var(--brand-accent);
+      border-radius: 8px;
+    }
+
+    .seg-week {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .seg-hrs {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .equation {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 10px 14px;
+      margin: 18px 0 0;
+    }
+
+    .equation span {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .eq-num {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .equation .result .eq-num {
+      font-size: 2.5rem;
+    }
+
+    .op {
+      color: var(--text-secondary);
+      font-size: 1.25rem;
+    }
+
+    @media (min-width: 640px) {
+      .page {
+        gap: 24px;
+        padding: 48px 24px 72px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="eyebrow">CARGOPLOT</p>
+      <h1>Hours summary</h1>
+      <p class="lead">Four ways to show the same facts: 4 weeks, 12 hrs per week, 48 hrs total. <a class="back" href="index.html">Back to the plan</a></p>
+    </header>
+
+    <section class="panel" aria-labelledby="opt-figures">
+      <h2 id="opt-figures">Three figures</h2>
+      <p class="note">Each fact is its own number, read left to right.</p>
+      <ul class="figures">
+        <li>
+          <span class="num">4</span>
+          <span class="label">weeks</span>
+        </li>
+        <li>
+          <span class="num">12</span>
+          <span class="label">hrs per week</span>
+        </li>
+        <li>
+          <span class="num">48</span>
+          <span class="label">hrs total</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="panel" aria-labelledby="opt-weeks">
+      <h2 id="opt-weeks">Four weeks</h2>
+      <p class="note">The same 12 hours repeats once for each week.</p>
+      <ol class="weeks">
+        <li>
+          <span class="week-num">Week 1</span>
+          <span class="week-hrs">12 hrs</span>
+        </li>
+        <li>
+          <span class="week-num">Week 2</span>
+          <span class="week-hrs">12 hrs</span>
+        </li>
+        <li>
+          <span class="week-num">Week 3</span>
+          <span class="week-hrs">12 hrs</span>
+        </li>
+        <li>
+          <span class="week-num">Week 4</span>
+          <span class="week-hrs">12 hrs</span>
+        </li>
+      </ol>
+      <p class="total">48 hrs total</p>
+    </section>
+
+    <section class="panel" aria-labelledby="opt-split">
+      <h2 id="opt-split">Split total</h2>
+      <p class="note">48 hours is the whole amount, cut into four equal parts.</p>
+      <ol class="segments">
+        <li>
+          <span class="seg-week">Week 1</span>
+          <span class="seg-hrs">12 hrs</span>
+        </li>
+        <li>
+          <span class="seg-week">Week 2</span>
+          <span class="seg-hrs">12 hrs</span>
+        </li>
+        <li>
+          <span class="seg-week">Week 3</span>
+          <span class="seg-hrs">12 hrs</span>
+        </li>
+        <li>
+          <span class="seg-week">Week 4</span>
+          <span class="seg-hrs">12 hrs</span>
+        </li>
+      </ol>
+      <p class="total">48 hrs total</p>
+    </section>
+
+    <section class="panel" aria-labelledby="opt-sum">
+      <h2 id="opt-sum">The sum</h2>
+      <p class="note">The total is what 4 weeks of 12 hours add up to.</p>
+      <p class="equation" aria-label="4 weeks times 12 hours equals 48 hours">
+        <span><span class="eq-num">4</span> weeks</span>
+        <span class="op" aria-hidden="true">×</span>
+        <span><span class="eq-num">12</span> hrs</span>
+        <span class="op" aria-hidden="true">=</span>
+        <span class="result"><span class="eq-num">48</span> hrs</span>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
