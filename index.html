@@ -126,23 +126,11 @@
       line-height: 1.3;
     }
 
-    .time-options {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .time-note {
-      margin: 6px 0 0;
-      color: var(--text-secondary);
-      font-size: 0.9375rem;
-    }
-
     .time-hero {
       display: flex;
       align-items: baseline;
       gap: 8px;
-      margin: 14px 0 0;
+      margin: 0;
     }
 
     .time-num {
@@ -152,46 +140,9 @@
       line-height: 1;
     }
 
-    .time-support,
-    .time-sentence {
+    .time-support {
       margin: 8px 0 0;
       line-height: 1.45;
-    }
-
-    .time-sentence {
-      margin-top: 14px;
-    }
-
-    .time-track {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      margin: 16px 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .time-track li {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding-top: 10px;
-      border-top: 2px solid var(--brand-primary);
-    }
-
-    .time-track li + li {
-      margin-left: 8px;
-    }
-
-    .time-step {
-      font-family: Sora, "Instrument Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .time-hrs {
-      font-size: 0.875rem;
     }
 
     .panel {
@@ -446,51 +397,10 @@
       <div id="plan" class="plan-weeks"></div>
     </section>
 
-    <div class="time-options">
-      <section class="panel" aria-labelledby="time-total">
-        <h2 id="time-total">The total</h2>
-        <p class="time-note">48 hours is the commitment. The weeks explain the pace.</p>
-        <p class="time-hero"><span class="time-num">48</span> hrs</p>
-        <p class="time-support">12 hrs a week, for 4 weeks.</p>
-      </section>
-
-      <section class="panel" aria-labelledby="time-week">
-        <h2 id="time-week">Each week</h2>
-        <p class="time-note">The weekly load comes first.</p>
-        <p class="time-hero"><span class="time-num">12</span> hrs</p>
-        <p class="time-support">Every week for 4 weeks. 48 hrs in all.</p>
-      </section>
-
-      <section class="panel" aria-labelledby="time-words">
-        <h2 id="time-words">In words</h2>
-        <p class="time-note">One sentence, with no separate figures.</p>
-        <p class="time-sentence">The work runs for 4 weeks, at 12 hrs per week, 48 hrs in total.</p>
-      </section>
-
-      <section class="panel" aria-labelledby="time-track">
-        <h2 id="time-track">Week by week</h2>
-        <p class="time-note">The same 12 hours, once for each week.</p>
-        <ol class="time-track">
-          <li>
-            <span class="time-step">1</span>
-            <span class="time-hrs">12 hrs</span>
-          </li>
-          <li>
-            <span class="time-step">2</span>
-            <span class="time-hrs">12 hrs</span>
-          </li>
-          <li>
-            <span class="time-step">3</span>
-            <span class="time-hrs">12 hrs</span>
-          </li>
-          <li>
-            <span class="time-step">4</span>
-            <span class="time-hrs">12 hrs</span>
-          </li>
-        </ol>
-        <p class="time-support">48 hrs across the 4 weeks.</p>
-      </section>
-    </div>
+    <section class="panel" aria-label="Engagement hours">
+      <p class="time-hero"><span class="time-num">48</span> hrs</p>
+      <p class="time-support">12 hrs a week, for 4 weeks.</p>
+    </section>
 
     <p class="footer-quiet">Prepared by <a href="https://www.berkaytaskin.com/">Berkay</a> @ <a href="https://www.salty-minds.com/">Salty Minds</a>, with the ocean's energy.</p>
   </main>
