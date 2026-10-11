@@ -210,11 +210,25 @@
       gap: 20px;
     }
 
+    .plan-head,
     #plan .plan-week {
       display: grid;
       grid-template-columns: 7.5rem minmax(0, 1fr);
       gap: 12px 20px;
       align-items: start;
+    }
+
+    .plan-head {
+      margin: 0 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .plan-head p {
+      margin: 0;
+      color: var(--brand-primary);
+      font-size: 0.8125rem;
+      font-weight: 600;
     }
 
     #plan .plan-week + .plan-week {
@@ -283,6 +297,7 @@
     }
 
     @media (max-width: 639px) {
+      .plan-head,
       #plan .plan-week {
         grid-template-columns: 4.5rem minmax(0, 1fr);
         gap: 8px 12px;
@@ -346,7 +361,7 @@
 
     <section class="panel" aria-labelledby="problem-heading">
       <h2 id="problem-heading">Problem statement</h2>
-      <p class="statement">Sales employees at Cargoplot comparing freight options can’t easily tell which ones differ in the ways that matter to them. As a result, decisions take more effort than desired.</p>
+      <p class="statement">When sales employees at Cargoplot compare freight options, they can’t easily tell how they differ. Results show many cards with prices that look nearly identical, and repeated fields take up space where the differences should be. The first quote sits below the fold on mobile, so clients scroll past filters before they can compare. Decisions take more effort than desired.</p>
     </section>
 
     <div class="split">
@@ -394,6 +409,10 @@
 
     <section class="panel" aria-labelledby="plan-heading">
       <h2 id="plan-heading" class="visually-hidden">Plan</h2>
+      <div class="plan-head">
+        <p>Week</p>
+        <p>Activities</p>
+      </div>
       <div id="plan" class="plan-weeks"></div>
     </section>
 
@@ -414,7 +433,6 @@
           activities: [
             "Stakeholder sessions",
             "Customer interviews",
-            "Platform walkthrough and usage data review",
             "Map the decision funnel"
           ],
           output: "Decision funnel map and key hypotheses"
@@ -443,10 +461,9 @@
           phase: "Revision, handoff and next steps",
           activities: [
             "Revise prototype",
-            "Align with design system",
-            "Handoff & next steps session with stakeholders"
+            "Handover and next steps session with stakeholders"
           ],
-          output: "Design files ready for handover with spec and acceptance criteria"
+          output: "Design files ready with spec and acceptance criteria"
         }
       ];
 
@@ -468,7 +485,7 @@
               "<p class=\"plan-phase\"><span class=\"visually-hidden\">Week " + week.id + ", </span>" + escapeHtml(week.phase) + "</p>" +
             "</div>" +
             "<div class=\"plan-body\">" +
-              "<ul class=\"plan-activities\" aria-label=\"Key activities\">" +
+              "<ul class=\"plan-activities\" aria-label=\"Activities\">" +
                 week.activities.map(function (activity) {
                   return "<li>" + escapeHtml(activity) + "</li>";
                 }).join("") +
